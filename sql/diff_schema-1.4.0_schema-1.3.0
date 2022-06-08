@@ -1,0 +1,92 @@
+5,6c5,6
+< -- Dumped from database version 13.4 (Debian 13.4-4.pgdg110+1)
+< -- Dumped by pg_dump version 13.4 (Debian 13.4-4.pgdg110+1)
+---
+> -- Dumped from database version 13.5 (Debian 13.5-1.pgdg110+1)
+> -- Dumped by pg_dump version 13.5 (Debian 13.5-1.pgdg110+1)
+70,104d69
+< -- Name: tableros; Type: TABLE; Schema: public; Owner: mads
+< --
+< 
+< CREATE TABLE public.tableros (
+<     id bigint NOT NULL,
+<     contador_tareas integer NOT NULL,
+<     nombre character varying(255) NOT NULL,
+<     usuario_id bigint
+< );
+< 
+< 
+< ALTER TABLE public.tableros OWNER TO mads;
+< 
+< --
+< -- Name: tableros_id_seq; Type: SEQUENCE; Schema: public; Owner: mads
+< --
+< 
+< CREATE SEQUENCE public.tableros_id_seq
+<     START WITH 1
+<     INCREMENT BY 1
+<     NO MINVALUE
+<     NO MAXVALUE
+<     CACHE 1;
+< 
+< 
+< ALTER TABLE public.tableros_id_seq OWNER TO mads;
+< 
+< --
+< -- Name: tableros_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: mads
+< --
+< 
+< ALTER SEQUENCE public.tableros_id_seq OWNED BY public.tableros.id;
+< 
+< 
+< --
+110,111d74
+<     fecha date,
+<     terminada boolean,
+113,114d75
+<     equipo_id bigint,
+<     tablero_id bigint,
+188,194d148
+< -- Name: tableros id; Type: DEFAULT; Schema: public; Owner: mads
+< --
+< 
+< ALTER TABLE ONLY public.tableros ALTER COLUMN id SET DEFAULT nextval('public.tableros_id_seq'::regclass);
+< 
+< 
+< --
+225,232d178
+< -- Name: tableros tableros_pkey; Type: CONSTRAINT; Schema: public; Owner: mads
+< --
+< 
+< ALTER TABLE ONLY public.tableros
+<     ADD CONSTRAINT tableros_pkey PRIMARY KEY (id);
+< 
+< 
+< --
+249,256d194
+< -- Name: tareas fk7a7bbe0arnbqnrekrryoab7je; Type: FK CONSTRAINT; Schema: public; Owner: mads
+< --
+< 
+< ALTER TABLE ONLY public.tareas
+<     ADD CONSTRAINT fk7a7bbe0arnbqnrekrryoab7je FOREIGN KEY (equipo_id) REFERENCES public.equipos(id) ON DELETE CASCADE;
+< 
+< 
+< --
+273,280d210
+< -- Name: tableros fko6lw5x303hytm2gxdmndryyy0; Type: FK CONSTRAINT; Schema: public; Owner: mads
+< --
+< 
+< ALTER TABLE ONLY public.tableros
+<     ADD CONSTRAINT fko6lw5x303hytm2gxdmndryyy0 FOREIGN KEY (usuario_id) REFERENCES public.usuarios(id);
+< 
+< 
+< --
+286,293d215
+< 
+< 
+< --
+< -- Name: tareas fksqj5mtew63jjlb55n4yfxqq0; Type: FK CONSTRAINT; Schema: public; Owner: mads
+< --
+< 
+< ALTER TABLE ONLY public.tareas
+<     ADD CONSTRAINT fksqj5mtew63jjlb55n4yfxqq0 FOREIGN KEY (tablero_id) REFERENCES public.tableros(id);
