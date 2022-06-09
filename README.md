@@ -22,8 +22,14 @@ $ ./mvnw spring-boot:run
 También puede ejecutar el `jar` que se encuetra en la carpeta `/production`:
 
 ```
-$ java -jar target/mads-todolist-inicial-0.0.1-SNAPSHOT.jar 
+$ java -jar .\target\sprinter-exercise-1.2.0-SNAPSHOT.jar 
 ```
+
+## Población de DB
+
+Al ejecutarse el proyecto se cargará el script `data-dev.sql` que ejecutará 3 secuencias Insert para que la DB esté mínimamente poblada.
+
+![image](https://user-images.githubusercontent.com/60979312/172863898-c764edfc-f5a0-4556-bac3-02c65fce2eaf.png)
 
 ## Rutas
 
