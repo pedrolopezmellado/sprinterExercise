@@ -19,7 +19,7 @@ de Spring Boot:
 $ ./mvnw spring-boot:run 
 ```   
 
-También puede ejecutar el `jar` que se encuetra en la carpeta `/production`:
+También puede ejecutar el `jar` que se encuetra en la carpeta `/target`:
 
 ```
 $ java -jar .\target\sprinter-exercise-1.2.0-SNAPSHOT.jar 
