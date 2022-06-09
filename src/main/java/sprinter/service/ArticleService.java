@@ -1,5 +1,6 @@
 package sprinter.service;
 
+import org.hibernate.exception.ConstraintViolationException;
 import sprinter.model.Article;
 import sprinter.model.ArticleRepository;
 import org.slf4j.Logger;
@@ -19,7 +20,8 @@ public class ArticleService {
         this.articleRepository = articleRepository;
     }
 
-    public Article newArticle(Article a){
+    @Transactional
+    public Article newArticle(Article a) throws ConstraintViolationException{
         logger.debug("Adding article " + a.getName() + " to de store");
         Article article = new Article(a.getCode(), a.getName(), a.getPrice(), a.getStock(), a.getDescription(), a.getAvailable());
         articleRepository.save(article);
@@ -29,33 +31,42 @@ public class ArticleService {
     @Transactional(readOnly = true)
     public Article findByCode(String code){
         logger.debug("Searching article " + code);
-        Article article = articleRepository.findByCode(code);
+        Article article = articleRepository.findByCode(code).orElse(null);
         return article;
     }
 
     @Transactional
-    public Article updateArticle(Long idArticle, String code, String name, Double price, Integer stock, String description, Boolean available){
-        logger.debug("Updating article " + idArticle + " - " + name);
-        Article article = articleRepository.findById(idArticle).orElse(null);
+    public Article updateArticle(Article a) throws ConstraintViolationException{
+        logger.debug("Updating article " + a.getCode() + " - " + a.getName());
+        Article article = articleRepository.findByCode(a.getCode()).orElse(null);
         if (article == null) {
-            throw  new ArticleServiceException("There is no article with id " + idArticle);
+            throw  new ArticleServiceException("There is no article with code " + a.getCode());
         }
-        article.setCode(code);
-        article.setName(name);
-        article.setPrice(price);
-        article.setStock(stock);
-        article.setDescription(description);
-        article.setAvailable(available);
+        if (a.getName() != null) {
+            article.setName(a.getName());
+        }
+        if (a.getPrice() != null) {
+            article.setPrice(a.getPrice());
+        }
+        if (a.getStock() != null) {
+            article.setStock(a.getStock());
+        }
+        if (a.getDescription() != null) {
+            article.setDescription(a.getDescription());
+        }
+        if (a.getAvailable() != null) {
+            article.setAvailable(a.getAvailable());
+        }
         articleRepository.save(article);
         return article;
     }
 
     @Transactional
-    public void deleteArticle(Long idArticle) {
-        logger.debug("Deleting article " + idArticle);
-        Article article = articleRepository.findById(idArticle).orElse(null);
+    public void deleteArticle(String code) {
+        logger.debug("Deleting article " + code);
+        Article article = articleRepository.findByCode(code).orElse(null);
         if (article == null) {
-            throw  new ArticleServiceException("There is no article with id " + idArticle);
+            throw  new ArticleServiceException("There is no article with code " + code);
         }
         articleRepository.delete(article);
     }
